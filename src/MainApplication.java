@@ -1,22 +1,27 @@
+import deserializator.Deserializer;
+import deserializator.StringDeserializer;
 import model.Person;
 import serializator.Serializer;
 import serializator.StringSerializer;
 
-import java.lang.reflect.InvocationTargetException;
-
 public class MainApplication {
-    public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+    public static void main(String[] args) throws Exception {
 
         Person personObjToSerialize = new Person("Alex", "Surnames", 19);
 
         Serializer objSerializer = new StringSerializer();
         objSerializer.serialize(personObjToSerialize);
 
-//        Person person = (Person)
-//                Class.forName("model.Person")
-//                        .getConstructor(String.class, String.class, Integer.class)
-//                        .newInstance("1", "2", 3);
-//
-//        System.out.println(person);
+        Deserializer objDeserializer = new StringDeserializer();
+        Person deserialize = (Person) objDeserializer.deserialize("Person.sobj");
+        System.out.println(deserialize);
+    }
+
+    private static void some(Class<Person> personClass) {
+        Person person = (personClass.cast(getObject()));
+    }
+
+    private static Object getObject() {
+        return new Person("1", "2", 3);
     }
 }

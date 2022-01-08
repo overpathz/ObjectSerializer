@@ -1,7 +1,5 @@
 package serializator;
 
-import model.Person;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -18,8 +16,8 @@ public class StringSerializer implements Serializer {
      */
     public void serialize(Object object) {
         this.objClassName = object.getClass().getSimpleName();
-        Class<?> personClass = object.getClass();
-        Field[] declaredFields = personClass.getDeclaredFields();
+        Class<?> clazz = object.getClass();
+        Field[] declaredFields = clazz.getDeclaredFields();
         setAccessibleTrue(declaredFields);
         writeObjectFieldsToTheFile(declaredFields, object);
     }
