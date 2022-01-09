@@ -1,6 +1,6 @@
 package model;
 
-public class Car {
+public class Car implements MySerializable {
     String model;
     private double price;
 

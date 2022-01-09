@@ -1,8 +1,17 @@
-import deserializator.Deserializer;
-import deserializator.StringDeserializer;
+import deserialize.Deserializer;
+import deserialize.StringDeserializer;
+import model.MySerializable;
+import model.NotSerializableObject;
 import model.Person;
-import serializator.Serializer;
-import serializator.StringSerializer;
+import serialize.Serializer;
+import serialize.StringSerializer;
+
+import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class MainApplication {
     public static void main(String[] args) throws Exception {
@@ -12,16 +21,8 @@ public class MainApplication {
         Serializer objSerializer = new StringSerializer();
         objSerializer.serialize(personObjToSerialize);
 
-        Deserializer objDeserializer = new StringDeserializer();
-        Person deserialize = (Person) objDeserializer.deserialize("Person.sobj");
-        System.out.println(deserialize);
-    }
-
-    private static void some(Class<Person> personClass) {
-        Person person = (personClass.cast(getObject()));
-    }
-
-    private static Object getObject() {
-        return new Person("1", "2", 3);
+//        Deserializer objDeserializer = new StringDeserializer();
+//        Person deserialize = (Person) objDeserializer.deserialize("Person.sobj");
+//        System.out.println(deserialize);
     }
 }

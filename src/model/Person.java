@@ -1,6 +1,6 @@
 package model;
 
-public class Person {
+public class Person implements MySerializable {
     private String name;
     private String surname;
     private Integer age;

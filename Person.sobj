@@ -1,4 +1,4 @@
 model.Person
-Alex
-Surnames
-19
+java.lang.String Alex
+java.lang.String Surnames
+java.lang.Integer 19
