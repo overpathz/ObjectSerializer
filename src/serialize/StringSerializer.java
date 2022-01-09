@@ -3,6 +3,7 @@ package serialize;
 import exception.ClassNotSupportSerialization;
 import model.MySerializable;
 
+import javax.lang.model.element.PackageElement;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -31,33 +32,33 @@ public class StringSerializer implements Serializer {
     }
 
     public void serialize(Object object) {
-        if (checkSerializableInterfaceImplemented(object)) {
-            init(object);
-            processSerialization(object);
-        } else {
+        if (!checkSerializableInterfaceImplemented(object))
             throw new ClassNotSupportSerialization(object);
-        }
+
+        init(object);
+        processSerialization(object);
     }
 
     private void init(Object object) {
         objectInfo.setObject(object);
-        objectInfo.setClassNameToNameSavingFile(object.getClass().getSimpleName());
-        objectInfo.setFullClassName(object.getClass().getName());
+        Class<?> clazz = object.getClass();
+        objectInfo.setClassNameToNameSavingFile(clazz.getSimpleName());
+        objectInfo.setFullClassName(clazz.getName());
     }
 
     private boolean checkSerializableInterfaceImplemented(Object object) {
         Set<String> annotatedInterfaces = Arrays.stream(object.getClass().getAnnotatedInterfaces())
-                .map(x-> x.getType().getTypeName()).collect(toSet());
+                .map(x -> x.getType().getTypeName()).collect(toSet());
 
         return annotatedInterfaces.contains(SERIALIZABLE_TYPE_NAME);
     }
 
     private void processSerialization(Object object) {
-        Field[] declaredFields = getDeclarationsFields(object);
-        writeFieldsToFile(declaredFields, object);
+        Field[] declaredFields = getDeclaredFields(object);
+        writeFieldsToFile(declaredFields);
     }
 
-    private void writeFieldsToFile(Field[] declaredFields, Object object) {
+    private void writeFieldsToFile(Field[] declaredFields) {
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(objectInfo.getClassNameToNameSavingFile())))) {
             writer.println(objectInfo.getFullClassName());
             for (Field field : declaredFields) {
@@ -74,7 +75,7 @@ public class StringSerializer implements Serializer {
         return fieldType + ' ' + fieldValue;
     }
 
-    private Field[] getDeclarationsFields(Object object) {
+    private Field[] getDeclaredFields(Object object) {
         Class<?> clazz = object.getClass();
         Field[] declaredFields = clazz.getDeclaredFields();
         setAccessibleTrue(declaredFields);
